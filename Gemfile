@@ -1,3 +1,6 @@
+# Subledger ADDED 
+# Currently using Boocx Gem, will need to replace with Subledger Gem (see bottom)
+
 source 'https://rubygems.org'
 
 # ruby 2.0.0 required for Heroku deployment, 1.9.3 works locally
@@ -44,3 +47,12 @@ end
 gem 'balanced'
 
 gem 'quiet_assets', group: :development
+
+# Subledger Gem
+require 'openssl'
+OpenSSL::SSL::VERIFY_PEER = OpenSSL::SSL::VERIFY_NONE unless defined? OpenSSL::SSL::VERIFY_PEER
+I_KNOW_THAT_OPENSSL_VERIFY_PEER_EQUALS_VERIFY_NONE_IS_WRONG = nil
+
+source 'https://boocx:i9JHYGcWC9zjtw06@gems.boocx.com'
+
+gem 'boocx'
