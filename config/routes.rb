@@ -3,7 +3,12 @@ RentMyBike::Application.routes.draw do
 
   resources :listings, :rentals
 
+  get "/account"             => "accounts#my_rentals" , :as => "account"
+  get "/account/my_earnings" => "accounts#my_earnings", :as => "my_earnings"
+  get "/account/my_rentals"  => "accounts#my_rentals" , :as => "my_rentals"
+
   root 'listings#index'
+
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
