@@ -1,0 +1,4 @@
+# To use: type 'source bin/set_creds' in terminal
+
+export BALANCED_MARKETPLACE_URI="/v1/marketplaces/TEST-MP3FxHOlgxpYupWq0RAblD1K"
+export BALANCED_SECRET="7883eb6af57911e2b8f6026ba7cac9da"
