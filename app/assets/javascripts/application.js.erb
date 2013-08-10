@@ -15,7 +15,7 @@
 //= require_self
 
 var csrf = '<%= "#{ENV['BALANCED_CSRF']}" %>'
-var marketplaceUri = '/v1/marketplaces/TEST-MP3FxHOlgxpYupWq0RAblD1K'
+var marketplaceUri = '<%= "#{ENV['BALANCED_MARKETPLACE_URI']}" %>'
 //  kick everything off when jquery is ready
 $(function () {
     rentmybike.init({
