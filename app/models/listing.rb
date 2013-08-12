@@ -16,34 +16,23 @@ class Listing < ActiveRecord::Base
     renter.add_card(params[:card_uri])
 
     owner = self.user.balanced_customer
-  
-    # App renter -- Subledger Code 
-    # app_renter = user
-    
-    # App owner -- Subledger Code
-    #app_owner = User.find_by(:customer_uri => owner.uri)
-    # Does this change the owner_uri on the Listing? If Yes, then it is causing pay-out to fail, 
-    # because it's not using the owner with a bank account seeded in seeds.rb
-    
-    # debit buyer amount of listing
-  
-    # Subledger Code
-    lines = []
+
+    lines = [ ]
 
     debit = renter.debit(
         :amount => self.price*100,
         :description => self.description,
         :on_behalf_of => owner,
     )
-    
+
     # Subledger Code 
-    subledger = ::MySubledger.new
-    
-        lines << { :account     => user.subledger_ar_account,
-                   :description => self.description,
-                   :reference   => debit.uri,
-                   :value       => subledger.debit( self.price ) }
-    
+    subledger = MySubledger.new
+
+    lines << { :account     => user.subledger_ar_account,
+               :description => self.description,
+               :reference   => url_for( debit ),
+               :value       => subledger.debit( self.price ) }
+
     # credit owner of bicycle amount of listing
     # since this is an example, we're showing how to issue a credit
     # immediately.
@@ -56,11 +45,11 @@ class Listing < ActiveRecord::Base
     )
 
     # Subledger Code 
-    #   lines << { :account     => app_owner.subledger_ap_account,
-    #              :description => self.description,
-    #              :reference   => credit.uri,
-    #              :value       => subledger.credit( self.price ) }
-  
+    lines << { :account     => user.subledger_ap_account,
+               :description => self.description,
+               :reference   => url_for( credit ),
+               :value       => subledger.credit( self.price ) }
+
     rental = Rental.new(
       :debit_uri  => debit.uri,
       :credit_uri => credit.uri,
@@ -68,20 +57,27 @@ class Listing < ActiveRecord::Base
       :buyer => user,
       :owner => self.user,
     )
+
     rental.save
-reference = "http://rentmybikes.com/rentals/#{rental.id}"
-    
-  # Subledger Code 
-  #  journal_entry = subledger.
-       #                journal_entry.
-       #                     create_and_post(
-       #                       :effective_at => Time.now,
-       #                       :description  => self.description,
-       #                       :reference    => reference,
-       #                       :lines        => lines )
-       # 
-       # rental.subledger_je_id = journal_entry.id
-   
+
+    # Subledger Code 
+    journal_entry = subledger.
+                       journal_entry.
+                            create_and_post(
+                              :effective_at => Time.now,
+                              :description  => self.description,
+                              :reference    => "http://rentmybikes.com/rentals/#{rental.id}",
+                              :lines        => lines )
+
+    rental.subledger_je_id = journal_entry.id
+
+    rental.save
+  end
+
+  private
+
+  def url_for balanced_line
+    "https://dashboard.balancedpayments.com/#" + balanced_line.uri[3..-1]
   end
 
 end
