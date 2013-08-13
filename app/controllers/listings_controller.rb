@@ -2,15 +2,15 @@ class ListingsController < ApplicationController
   before_filter :require_sign_in, :only => [:edit, :update]
   before_filter :listing_owner_required, :only => [:edit, :update]
 
-  def index
+    def index
     @listings = Listing.all
-  end
+    end
 
-  def show
+    def show
     @listing = Listing.find(params[:id])
-  end
+    end
 
-  def create
+    def create
     # generate marketplace object
     marketplace = Balanced::Marketplace.my_marketplace
     user, owner = nil, nil
