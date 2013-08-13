@@ -1,7 +1,7 @@
 RentMyBike::Application.routes.draw do
   devise_for :users
 
-  resources :listings, :rentals
+  resources :listings, :rentals, :reports
 
   root 'listings#index'
   # The priority is based upon order of creation: first created -> highest priority.
