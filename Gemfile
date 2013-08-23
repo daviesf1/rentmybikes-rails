@@ -55,4 +55,4 @@ I_KNOW_THAT_OPENSSL_VERIFY_PEER_EQUALS_VERIFY_NONE_IS_WRONG = nil
 
 source 'https://boocx:i9JHYGcWC9zjtw06@gems.boocx.com'
 
-gem 'boocx'
+gem 'subledger'
