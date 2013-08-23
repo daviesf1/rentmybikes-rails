@@ -3,5 +3,21 @@ class Rental < ActiveRecord::Base
   belongs_to :owner, :class_name => 'User'
   belongs_to :listing
 
-  attr_accessible :debit_uri, :credit_uri, :buyer_id, :owner_id, :listing_id
+  attr_accessible :listing_Id, :owner_id, :buyer_id, :debit_uri, :credit_uri
+
+  def price
+    self.listing.price
+  end
+
+  def comission_rate
+    0.1
+  end
+
+  def comission
+    self.price * self.comission_rate
+  end
+
+  def net_price
+    self.price - self.comission
+  end
 end
