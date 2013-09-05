@@ -15,6 +15,8 @@ class User < ActiveRecord::Base
 
   has_many :listings
 
+  validates :name, presence: true
+
   def balanced_customer
     return Balanced::Customer.find(self.customer_uri) if self.customer_uri
 
@@ -38,13 +40,13 @@ class User < ActiveRecord::Base
   end
 
   def ar_account
-
     self.subledger.accounts.new_or_create(
       id: self.subledger_ar_acct_id,
       description: self.name,
       normal_balance: self.subledger.credit) do |ar|
 
       self.subledger_ar_acct_id = ar.id
+      self.save(failOnError: true)
     end
   end
 
@@ -55,6 +57,7 @@ class User < ActiveRecord::Base
       normal_balance: self.subledger.credit) do |ap|
 
       self.subledger_ap_acct_id = ap.id
+      self.save(failOnError: true)
     end
   end
 
@@ -65,6 +68,7 @@ class User < ActiveRecord::Base
       normal_balance: self.subledger.credit) do |revenue|
 
       self.subledger_revenue_acct_id = revenue.id
+      self.save(failOnError: true)
     end
   end
 

@@ -46,7 +46,6 @@ class SubledgerService
       ]
     )
 
-    puts rental.inspect
     @subledger.journal_entry.create_and_post(
       effective_at: Time.now,
       description:  listing.description,
@@ -55,12 +54,12 @@ class SubledgerService
         {
           account: escrow,
           reference: self.balanced_url(rental.debit_uri),
-          value: @subledger.debit(BigDecimal.new(rental.price / 100, 2))
+          value: @subledger.debit(price)
         },
         {
           account: renter.ar_account,
           reference: self.balanced_url(rental.debit_uri),
-          value: @subledger.credit(BigDecimal.new(rental.price / 100, 2))
+          value: @subledger.credit(price)
         }
       ]
     )
