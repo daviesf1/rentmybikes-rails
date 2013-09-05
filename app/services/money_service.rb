@@ -27,12 +27,12 @@ class MoneyService
 
   def debit(rental)
     debit = balanced.debit(rental)
-    #subledger.debit(rental, debit.uri)
+    subledger.debit(rental)
   end
 
   def credit(rental)
     credit = balanced.credit(rental)
-    #subledger.credit(rental, credit.uri)
+    subledger.credit(rental)
   end
 
 private

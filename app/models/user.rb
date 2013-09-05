@@ -38,21 +38,38 @@ class User < ActiveRecord::Base
   end
 
   def ar_account
-    self.subledger.new_or_create(id: self.ar_acct_id, description: self.name) do |ar|
-      self.ar_acct_id = ar.id
+
+    self.subledger.accounts.new_or_create(
+      id: self.subledger_ar_acct_id,
+      description: self.name,
+      normal_balance: self.subledger.credit) do |ar|
+
+      self.subledger_ar_acct_id = ar.id
     end
   end
 
   def ap_account
-    self.subledger.new_or_create(id: self.ap_acct_id, description: self.name) do |ap|
-      self.ap_acct_id = ap.id
+    self.subledger.accounts.new_or_create(
+      id: self.subledger_ap_acct_id,
+      description: self.name,
+      normal_balance: self.subledger.credit) do |ap|
+
+      self.subledger_ap_acct_id = ap.id
     end
   end
 
   def revenue_account
-    self.subledger.new_or_create(id: self.revenue_acct_id, description: self.name) do |revenue|
-      self.revenue_acct_id = revenue.id
+    self.subledger.accounts.new_or_create(
+      id: self.subledger_revenue_acct_id,
+      description: self.name,
+      normal_balance: self.subledger.credit) do |revenue|
+
+      self.subledger_revenue_acct_id = revenue.id
     end
+  end
+
+  def subledger
+    @subledger ||= MySubledger.new
   end
 
   def self.create_balanced_customer(params = {})
@@ -66,9 +83,5 @@ class User < ActiveRecord::Base
     end
   end
 
-private
-  def subleder
-    @subleder ||= Subledger.new
-  end
 end
 

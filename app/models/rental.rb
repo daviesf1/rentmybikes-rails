@@ -9,15 +9,8 @@ class Rental < ActiveRecord::Base
     self.listing.price
   end
 
-  def comission_rate
+  def commission_rate
     0.1
   end
 
-  def comission
-    self.price * self.comission_rate
-  end
-
-  def net_price
-    self.price - self.comission
-  end
 end
