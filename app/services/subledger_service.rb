@@ -11,7 +11,7 @@ class SubledgerService
   end
 
   def listing_full_url(listing) 
-    listing_url(listing, host: "http://localhost:5000")
+    listing_url(listing, host: "http://rentmybike-alex.herokuapp.com/")
   end
 
   def balanced_url(uri)
