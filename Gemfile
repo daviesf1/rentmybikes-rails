@@ -42,6 +42,8 @@ gem 'less-rails'
 
 group :development do
   gem 'debugger'
+  # fix rails console error on ubuntu
+  gem 'rb-readline', '~> 0.4.2'
 end
 
 gem 'balanced'
