@@ -17,7 +17,7 @@ private
   end
 
   def money
-    @money ||= Money.new
+    @money ||= MoneyService.new
   end
 
 end

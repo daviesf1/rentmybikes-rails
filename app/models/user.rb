@@ -15,16 +15,25 @@ class User < ActiveRecord::Base
 
   has_many :listings
 
-  before_create :setup_balanced_account
-  before_create :setup_subledger_accounts
+  def balanced_customer
+    return Balanced::Customer.find(self.customer_uri) if self.customer_uri
 
-  def customer
-    self.balanced
-    Balanced::Customer.find(self.customer_uri)
+    begin
+      customer = self.class.create_balanced_customer(
+        :name   => self.name,
+        :email  => self.email
+        )
+    rescue
+      'There was error fetching the Balanced customer'
+    end
+
+    self.customer_uri = customer.uri
+    self.save
+    customer
   end
 
   def add_card(card_uri)
-    customer = self.customer
+    customer = self.balanced_customer
     customer.add_card(card_uri)
   end
 
@@ -35,44 +44,31 @@ class User < ActiveRecord::Base
   end
 
   def ap_account
-    self.subledger.new_or_create(id: self.ap_acct_id, description: self.name) do |ap|
-      self.user.ap_acct_id = ap.id
-    end
+    self.subledger.new_or_create(id: self.ap_acct_id, description: self.name) do |ap|
+      self.ap_acct_id = ap.id
+    end
   end
 
   def revenue_account
-    self.subledger.new_or_create(id: self.revenue_acct_id, description: self.name) do |revenue|
-      self.user.ap_acct_id = revenue.id
-    end
+    self.subledger.new_or_create(id: self.revenue_acct_id, description: self.name) do |revenue|
+      self.revenue_acct_id = revenue.id
+    end
+  end
+
+  def self.create_balanced_customer(params = {})
+    begin
+      Balanced::Marketplace.mine.create_customer(
+        :name   => params[:name],
+        :email  => params[:email]
+        )
+    rescue
+      'There was an error adding a customer'
+    end
   end
 
 private
-  def setup_balanced_account
-    # initialize balanced
-    self.balanced
-
-    # create customer
-    customer = Balanced::Marketplace.mine.create_customer(
-      name: self.name,
-      email: self.email
-    )
-
-    # save customer uri
-    self.customer_uri = customer.uri
-  end
-
-  def setup_subledger_accounts
-    self.ar_account
-    self.ap_account
-    self.revenue_account
-  end
-
-  def balanced
-    @balanced ||= Balanced::Marketplace.my_marketplace
-  end
-
   def subleder
     @subleder ||= Subledger.new
   end
-
 end
+

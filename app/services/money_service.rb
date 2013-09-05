@@ -1,4 +1,4 @@
-class Money
+class MoneyService
   def initialize()
   end
 
@@ -7,14 +7,13 @@ class Money
     owner = listing.user
 
     # add card to renter
-    balanced.add_card!(renter, card)
+    renter.add_card(card)
 
     # create a new rental
-    rental = Rental.new(
-      listing: listing,
-      buyer: renter,
-      owner: owner
-    )
+    rental = Rental.new
+    rental.listing = listing
+    rental.buyer   = renter
+    rental.owner   = owner
 
     # debit renter customer
     debit = debit(rental)
@@ -22,26 +21,26 @@ class Money
     # credit owner customer
     credit = credit(rental) 
 
-    rental.save
+    rental.save!
     return rental
   end
 
   def debit(rental)
     debit = balanced.debit(rental)
-    subledger.debit(rental, debit.uri)
+    #subledger.debit(rental, debit.uri)
   end
 
   def credit(rental)
     credit = balanced.credit(rental)
-    subledger.credit(rental, credit.uri)
+    #subledger.credit(rental, credit.uri)
   end
 
 private
   def balanced
-    @balanced ||= RentMyBike::Balanced
+    @balanced ||= BalancedService.new
   end
 
   def subledger
-    @subledger ||= RentMyBike::Subledger
+    @subledger ||= SubledgerService.new
   end
 end

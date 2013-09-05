@@ -6,12 +6,12 @@ class RentalsController < ApplicationController
 
     # logic to handle guest/not signed in users
     if user_signed_in?
-      renter = current_user.balanced_customer
+      renter = current_user
 
     else
-      renter_customer = User.create_balanced_customer(
-        :name  => params[:"guest-name"],
-        :email => params[:"guest-email_address"]
+      renter = User.new(
+        name: params[:"guest-name"],
+        email: params[:"guest-email_address"]
       )
     end
 
