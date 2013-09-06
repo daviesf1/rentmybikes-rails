@@ -1,6 +1,6 @@
 class BalancedService
   def initialize()
-    #@marketplace = Balanced::Marketplace.my_marketplace
+    Balanced::Marketplace.my_marketplace
   end
 
   def debit(rental)
