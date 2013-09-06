@@ -50,6 +50,10 @@ gem 'balanced'
 
 gem 'quiet_assets', group: :development
 
+group :production do
+  gem 'rails_12factor'
+end
+
 # Subledger Gem
 require 'openssl'
 OpenSSL::SSL::VERIFY_PEER = OpenSSL::SSL::VERIFY_NONE unless defined? OpenSSL::SSL::VERIFY_PEER
