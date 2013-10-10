@@ -47,6 +47,28 @@ namespace :subledger do
     puts "SUBLEDGER_BOOK_ID='#{book.id}'"
   end
 
+  task :book, [:book_desc] => :environment do |t, args|
+    book_desc = args[:book_desc]
+
+    # create my subledger instance
+    my_subledger = MySubledger.new
+
+    # get org id
+    org = ENV['SUBLEDGER_ORG_ID']
+
+    puts ""
+    puts "* Creating Book"
+    puts "  org_id: #{org}"
+    puts "  description: #{book_desc}"
+
+    book = my_subledger.books.create org:         org,
+                                     description: book_desc
+
+    puts ""
+    puts "* Book created"
+    puts "SUBLEDGER_BOOK_ID='#{book.id}'"
+  end
+
   # run after running subledger:create, and making the setup it indicates
   # normal_balance: "d" or "c"
   #
