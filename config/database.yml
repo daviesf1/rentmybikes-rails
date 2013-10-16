@@ -4,8 +4,8 @@ development:
   encoding: unicode
   database: rentmybike_dev
   pool: 5
-  username:
-  password:
+  username: postgres
+  password: 4arvrm4
   host: localhost
   port: 5432
 
@@ -14,6 +14,8 @@ test:
   encoding: unicode
   database: rentmybike_test
   pool: 5
+  username: postgres
+  password: 4arvrm4
   host: localhost
   port: 5432
 
@@ -25,5 +27,5 @@ production:
   encoding: unicode
   database: rentmybike_production
   pool: 5
-  username:
-  password:
+  username: postgres
+  password: 4arvrm4

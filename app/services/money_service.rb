@@ -25,13 +25,21 @@ class MoneyService
     return rental
   end
 
+  # encapsulates debit logic
   def debit(rental)
+    # make debit operation on balanced
     debit = balanced.debit(rental)
+
+    # account it on subledger
     subledger.debit(rental)
   end
 
+  # encapsulates credit logic
   def credit(rental)
+    # make credit operation on balanced
     credit = balanced.credit(rental)
+
+    # account it on subledger
     subledger.credit(rental)
   end
 
