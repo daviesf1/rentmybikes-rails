@@ -1,3 +1,3 @@
 environments:
   production:
-    precompile_assets: true
+    precompile_assets: false
