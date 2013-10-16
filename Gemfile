@@ -12,7 +12,7 @@ gem 'rails', '~> 4.0.0'
 # Use pg for db
 gem 'pg'
 
-gem 'thin'
+gem 'unicorn', '4.6.0'
 
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 4.0.0'
@@ -50,9 +50,9 @@ gem 'balanced'
 
 gem 'quiet_assets', group: :development
 
-group :production do
-  gem 'rails_12factor'
-end
+#group :production do
+#  gem 'rails_12factor'
+#end
 
 # Subledger Gem
 require 'openssl'
