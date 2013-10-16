@@ -15,29 +15,31 @@ class MoneyService
     rental.buyer   = renter
     rental.owner   = owner
 
-    # debit renter customer
-    debit = debit(rental)
+    # charge renter for rental
+    charge_renter(rental)
 
-    # credit owner customer
-    credit = credit(rental) 
+    # pay owner for rental
+    pay_owner(rental) 
 
+    # save the rental
     rental.save!
+
     return rental
   end
 
-  # encapsulates debit logic
-  def debit(rental)
+  # encapsulates charing renter logic
+  def charge_renter(rental)
     # make debit operation on balanced
-    debit = balanced.debit(rental)
+    balanced.debit(rental)
 
     # account it on subledger
     subledger.debit(rental)
   end
 
-  # encapsulates credit logic
-  def credit(rental)
+  # encapsulates paying owner logic
+  def pay_owner(rental)
     # make credit operation on balanced
-    credit = balanced.credit(rental)
+    balanced.credit(rental)
 
     # account it on subledger
     subledger.credit(rental)
