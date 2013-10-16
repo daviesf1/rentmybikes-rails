@@ -1,11 +1,12 @@
 # To use: type 'source config/creds' in terminal
 
-export BALANCED_MARKETPLACE_URI="/v1/marketplaces/TEST-MP3FxHOlgxpYupWq0RAblD1K"
-export BALANCED_SECRET="7883eb6af57911e2b8f6026ba7cac9da"
+export BALANCED_MARKETPLACE_URI="/v1/marketplaces/TEST-MP1m5gS3uKfWvFXawnVXrXtY"
+export BALANCED_SECRET="ak-test-u6HIUenofQpXqlQ5SgpBEefEM5oZ8GMH"
 export BALANCED_CSRF="SGewElZj43bkOFbayDwhf5"
 
-export SUBLEDGER_KEY_ID='GqAQGZWbhcDOYiWzHklVF5'
-export SUBLEDGER_SECRET='dKTpyWuro8kGifMG4aHyT2'
-export SUBLEDGER_ORG_ID='0d0JpESoYLyxdlkyE0E2B3'
-export SUBLEDGER_BOOK_ID='khYO3NGtDPBWOebJueELy3'
-export SUBLEDGER_ESCROW_ID='E5yMqCOztaeJvVZbLdFrK4'
+export SUBLEDGER_KEY_ID='MqnbjFOfh4OWiHwvxEB8P3'
+export SUBLEDGER_IDENTITY_ID='SxubF4hDmporOdELzoczv4'
+export SUBLEDGER_SECRET='kw6mYmEAaSXO0j4p7qGrR4'
+export SUBLEDGER_ORG_ID='5E4XcRQKwj2hhYwwYLmEw6'
+export SUBLEDGER_BOOK_ID='aeMyiNlVoWHqyVOJDsoaw6'
+export SUBLEDGER_ESCROW_ID='vSkwBtj8NByvuNnD2b2Vx5'
