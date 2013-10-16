@@ -151,7 +151,7 @@ form {
             display: table-cell;
             vertical-align: middle;
             padding: 0 20px;
-            width: 461px / 3 * 2;
+            width: (461px / 3 * 2);
             border-right: 1px solid $reallyLightGray;
         }
         .price {
@@ -176,7 +176,7 @@ form {
         div {
             display: table-cell;
             text-align: left;
-            width: 461px / 3;
+            width: (461px / 3);
             font-size: 12px;
             vertical-align: middle;
             strong {
