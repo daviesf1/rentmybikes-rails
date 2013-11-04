@@ -1,6 +1,7 @@
 class SubledgerService
 
   include Rails.application.routes.url_helpers
+  include ActionView::Helpers::TextHelper
 
   def initialize()
     @subledger = MySubledger.new
@@ -28,6 +29,8 @@ class SubledgerService
     commission = BigDecimal.new((rental.price / 100) * rental.commission_rate, 2)
     net_price = price - commission
 
+    description =  truncate(listing.description, length: 20)
+
     @subledger.journal_entry.create_and_post(
       effective_at: Time.now,
       description:  listing.description,
@@ -35,13 +38,15 @@ class SubledgerService
       lines:        [
         {
           account: renter.ar_account,
-          value: @subledger.debit(price)
+          value: @subledger.debit(price),
+          description: "Thanks for Renting! - #{description}"
         }, {
           account: renter.revenue_account,
-          value: @subledger.credit(commission) 
+          value: @subledger.credit(commission)
         }, {
           account: owner.ap_account, 
-          value: @subledger.credit(net_price)
+          value: @subledger.credit(net_price),
+          description: "Your Bike is Making Money! - #{description}"
         }
       ]
     )
@@ -59,7 +64,8 @@ class SubledgerService
         {
           account: renter.ar_account,
           reference: self.balanced_url(rental.debit_uri),
-          value: @subledger.credit(price)
+          value: @subledger.credit(price),
+          description: "Payment Received Thanks! - #{description}"
         }
       ]
     )
@@ -74,6 +80,8 @@ class SubledgerService
     commission = BigDecimal.new((rental.price / 100) * rental.commission_rate, 2)
     net_price = price - commission
 
+    description =  truncate(listing.description, length: 20)
+
     @subledger.journal_entry.create_and_post(
       effective_at: Time.now,
       description:  listing.description,
@@ -82,7 +90,8 @@ class SubledgerService
         {
           account: owner.ap_account,
           reference: self.balanced_url(rental.credit_uri),
-          value: @subledger.debit(net_price)
+          value: @subledger.debit(net_price),
+          description: "Payment Sent, Enjoy! - #{description}"
         }, {
           account: escrow,
           reference: self.balanced_url(rental.credit_uri),

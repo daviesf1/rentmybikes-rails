@@ -1,36 +1,37 @@
 class AccountsController < ApplicationController
   before_filter :authenticate_user!
 
-  def show
+  def my_earnings
     now = Time.now
-    ap_account = current_user.ap_account
-    ar_account = current_user.ar_account
+    @account = current_user.ap_account
 
     # get ap lines
-    ap_lines = ap_account.lines(
+    @lines = @account.lines(
       action: :before,
       effective_at: now,
       limit: 10
-    )
+    ).reverse
 
-    # get ar lines
-    ar_lines = ar_account.lines(
+    # get ap balance
+    @balance = @account.balance(at: now)
+
+    render :history
+  end
+
+  def my_rentals
+    now = Time.now
+    @account = current_user.ar_account
+
+    # get ap lines
+    @lines = @account.lines(
       action: :before,
       effective_at: now,
       limit: 10
-    )
+    ).reverse
 
-    # get ap and ar balance
-    ap_balance = ap_account.balance(at: now)
-    ar_balance = ar_account.balance(at: now)
+    # get ap balance
+    @balance = @account.balance(at: now)
 
-    # merge ap and ar lines
-    @lines = ap_lines + ar_lines
-    
-    # sort lines by effective_at
-    @lines = @lines.sort { |a, b| a.effective_at <=> b.effective_at }
-
-    # calculate balance
-    @final_balance = ap_balance + ar_balance
+    render :history
   end
 end

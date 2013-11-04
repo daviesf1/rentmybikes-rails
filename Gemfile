@@ -17,6 +17,9 @@ gem 'unicorn', '4.6.0'
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 4.0.0'
 
+# Add Boostrap
+gem 'bootstrap-sass', '~> 2.0.4.2'
+
 # Use Uglifier as compressor for JavaScript assets
 gem 'uglifier', '>= 1.3.0'
 
