@@ -42,8 +42,8 @@ class User < ActiveRecord::Base
   def ar_account
     self.subledger.accounts.new_or_create(
       id: self.subledger_ar_acct_id,
-      description: self.name,
-      normal_balance: self.subledger.credit) do |ar|
+      description: "Accounts Receivable (#{self.email})",
+      normal_balance: self.subledger.debit) do |ar|
 
       self.subledger_ar_acct_id = ar.id
       self.save(failOnError: true)
@@ -57,7 +57,7 @@ class User < ActiveRecord::Base
   def ap_account
     self.subledger.accounts.new_or_create(
       id: self.subledger_ap_acct_id,
-      description: self.name,
+      description: "Accounts Payable (#{self.email})",
       normal_balance: self.subledger.credit) do |ap|
 
       self.subledger_ap_acct_id = ap.id
@@ -72,11 +72,15 @@ class User < ActiveRecord::Base
   def revenue_account
     self.subledger.accounts.new_or_create(
       id: self.subledger_revenue_acct_id,
-      description: self.name,
+      description: "Revenue (#{self.email})",
       normal_balance: self.subledger.credit) do |revenue|
 
       self.subledger_revenue_acct_id = revenue.id
       self.save(failOnError: true)
+
+      # attach to revenue category
+      revenue_category = self.subledger.category.read id: MySubledger.revenue_category
+      revenue_category.attach :account => revenue
     end
   end
 

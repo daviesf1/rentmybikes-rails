@@ -15,10 +15,6 @@ class SubledgerService
     listing_url(listing, host: "http://rentmybikes.subledger.com")
   end
 
-  def balanced_url(uri)
-    "https://api.balancedpayments.com#{uri}"
-  end
-
   def debit(rental)
     listing    = rental.listing
     renter     = rental.buyer
@@ -33,39 +29,34 @@ class SubledgerService
 
     @subledger.journal_entry.create_and_post(
       effective_at: Time.now,
-      description:  listing.description,
+      description:  "Rented: #{description}",
       reference:    self.listing_full_url(listing),
       lines:        [
         {
           account: renter.ar_account,
-          value: @subledger.debit(price),
-          description: "Thanks for Renting! - #{description}"
+          value: @subledger.debit(price)
         }, {
           account: renter.revenue_account,
           value: @subledger.credit(commission)
         }, {
           account: owner.ap_account, 
-          value: @subledger.credit(net_price),
-          description: "Your Bike is Making Money! - #{description}"
+          value: @subledger.credit(net_price)
         }
       ]
     )
 
     @subledger.journal_entry.create_and_post(
       effective_at: Time.now,
-      description:  listing.description,
+      description:  "Payment Received: #{description}",
       reference:    self.listing_full_url(listing),
       lines:        [
         {
           account: escrow,
-          reference: self.balanced_url(rental.debit_uri),
           value: @subledger.debit(price)
         },
         {
           account: renter.ar_account,
-          reference: self.balanced_url(rental.debit_uri),
-          value: @subledger.credit(price),
-          description: "Payment Received Thanks! - #{description}"
+          value: @subledger.credit(price)
         }
       ]
     )
@@ -84,17 +75,14 @@ class SubledgerService
 
     @subledger.journal_entry.create_and_post(
       effective_at: Time.now,
-      description:  listing.description,
+      description:  "Payout Complete: #{description}",
       reference:    self.listing_full_url(listing),
       lines:        [
         {
           account: owner.ap_account,
-          reference: self.balanced_url(rental.credit_uri),
-          value: @subledger.debit(net_price),
-          description: "Payment Sent, Enjoy! - #{description}"
+          value: @subledger.debit(net_price)
         }, {
           account: escrow,
-          reference: self.balanced_url(rental.credit_uri),
           value: @subledger.credit(net_price)
         }
       ]

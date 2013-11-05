@@ -18,4 +18,8 @@ module MySubledger
   def self.ap_category
     ENV['SUBLEDGER_AP_CATEGORY_ID']
   end
+
+  def self.revenue_category
+    ENV['SUBLEDGER_REVENUE_CATEGORY_ID']
+  end
 end

@@ -61,7 +61,7 @@ namespace :subledger do
     puts "  org_id: #{org}"
     puts "  description: #{book_desc}"
 
-    book = my_subledger.books.create org:         org,
+    book = my_subledger.books.create org:         my_subledger.org.read(id: org),
                                      description: book_desc
 
     puts ""
@@ -123,7 +123,10 @@ namespace :subledger do
     puts "- Accounts Receivable category created: #{ar_category.id}"
 
     ap_category = subledger.categories.create :description => 'Accounts Payable', normal_balance: Subledger::Domain::Credit, version: 1
-    puts "- Accounts Payable created: #{ap_category.id}"
+    puts "- Accounts Payable category created: #{ap_category.id}"
+
+    revenue_category = subledger.categories.create :description => 'Revenue', normal_balance: Subledger::Domain::Credit, version: 1
+    puts "- Revenue category created: #{revenue_category.id}"
 
     # attach accounts to categories
     puts "* Attaching Accounts to Categories"
@@ -132,11 +135,20 @@ namespace :subledger do
     puts "- Escrow account attached to escrow category"
 
     User.all.each do |user|
-      ap_category.attach :account => subledger.account(:id => user.subledger_ap_acct_id)
-      puts "- User ap account attached to ap category"
+      if user.subledger_ap_acct_id.present?
+        ap_category.attach :account => subledger.account(:id => user.subledger_ap_acct_id)
+        puts "- User ap account attached to ap category"
+      end
 
-      ar_category.attach :account => subledger.account(:id => user.subledger_ar_acct_id)
-      puts "- user ar account attached to ar category"
+      if user.subledger_ar_acct_id.present?
+        ar_category.attach :account => subledger.account(:id => user.subledger_ar_acct_id)
+        puts "- user ar account attached to ar category"
+      end
+
+      if user.subledger_revenue_acct_id.present?
+        revenue_category.attach :account => subledger.account(:id => user.subledger_revenue_acct_id)
+        puts "- user revenue account attached to revenue category"
+      end
     end
 
     # create the report
@@ -164,9 +176,13 @@ namespace :subledger do
                          :parent   => liabilities_category
     puts "- AP category attached to report, with liabilities category as parent"
 
+    balance_sheet.attach :category => revenue_category
+    puts "- Revenue category attached to report"
+
     puts "* Just add/set the following to .env and config/creds:"
     puts "SUBLEDGER_AR_CATEGORY_ID='#{ar_category.id}'"
     puts "SUBLEDGER_AP_CATEGORY_ID='#{ap_category.id}'"
+    puts "SUBLEDGER_REVENUE_CATEGORY_ID='#{revenue_category.id}'"
     puts "All done."
   end
 
@@ -180,14 +196,26 @@ namespace :subledger do
     ar_category = subledger.categories.read :id => MySubledger.ar_category
     puts "AR Category is #{ar_category.id}"
 
+    revenue_category = subledger.categories.read :id => MySubledger.revenue_category
+    puts "Revenue Category is #{revenue_category.id}"
+
     User.all.each do |user|
       puts "- User: #{user.email}"
 
-      ap_category.attach :account => subledger.account(:id => user.subledger_ap_acct_id)
-      puts "- User ap account attached to ap category"
+      if user.subledger_ap_acct_id.present?
+        ap_category.attach :account => subledger.account(:id => user.subledger_ap_acct_id)
+        puts "- User ap account attached to ap category"
+      end
 
-      ar_category.attach :account => subledger.account(:id => user.subledger_ar_acct_id)
-      puts "- user ar account attached to ar category"
+      if user.subledger_ar_acct_id.present?
+        ar_category.attach :account => subledger.account(:id => user.subledger_ar_acct_id)
+        puts "- user ar account attached to ar category"
+      end
+
+      if user.subledger_revenue_acct_id.present?
+        revenue_category.attach :account => subledger.account(:id => user.subledger_revenue_acct_id)
+        puts "- user revenue account attached to revenue category"
+      end
     end
   end
 end
