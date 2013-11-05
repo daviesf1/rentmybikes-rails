@@ -19,7 +19,8 @@ class MoneyService
     charge_renter(rental)
 
     # pay owner for rental
-    pay_owner(rental) 
+    # XXX temporarely disabled
+    #pay_owner(rental) 
 
     # save the rental
     rental.save!
