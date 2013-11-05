@@ -102,4 +102,68 @@ namespace :subledger do
     puts "* Just add/set the following to .env and config/creds:"
     puts "SUBLEDGER_ESCROW_ID='#{escrow.id}'"
   end
+
+  task :report, [] => :environment do |t, args|
+    # create my subledger instance
+    subledger = MySubledger.new
+
+    # create categories
+    puts "* Creating Categories:"
+
+    assets_category = subledger.categories.create :description => 'Assets', normal_balance: Subledger::Domain::Debit, version: 1
+    puts "- Assets category created"
+
+    liabilities_category = subledger.categories.create :description => 'Liabilities', normal_balance: Subledger::Domain::Credit, version: 1
+    puts "- Liabilities category created"
+
+    escrow_category = subledger.categories.create :description => 'Escrow', normal_balance: Subledger::Domain::Debit, version: 1
+    puts "- Escrow category created"
+
+    ar_category = subledger.categories.create :description => 'Accounts Receivable', normal_balance: Subledger::Domain::Debit, version: 1
+    puts "- Accounts Receivable category created"
+
+    ap_category = subledger.categories.create :description => 'Accounts Payable', normal_balance: Subledger::Domain::Credit, version: 1
+    puts "- Accounts Payable created"
+
+    # attach accounts to categories
+    puts "* Attaching Accounts to Categories"
+
+    escrow_category.attach :account => subledger.account(:id => MySubledger.escrow_account)
+    puts "- Escrow account attached to escrow category"
+
+    User.all.each do |user|
+      ap_category.attach :account => subledger.account(:id => user.subledger_ap_acct_id)
+      puts "- User ap account attached to ap category"
+
+      ar_category.attach :account => subledger.account(:id => user.subledger_ar_acct_id)
+      puts "- user ar account attached to ar category"
+    end
+
+    # create the report
+    puts "* Creating the report"
+    balance_sheet = subledger.report.create(:description => 'Balance Sheet')
+
+    # attach categories to report
+    puts "* Attaching categories to report"
+
+    balance_sheet.attach :category => assets_category
+    puts "- Assets category attached to report"
+
+    balance_sheet.attach :category => liabilities_category
+    puts "- Liabilities category attached to report"
+
+    balance_sheet.attach :category => escrow_category,
+                         :parent   => assets_category
+    puts "- Escrow category attached to report, with assets category as parent"
+
+    balance_sheet.attach :category => ar_category,
+                         :parent   => assets_category
+    puts "- AR category attached to report, with assets category as parent"
+
+    balance_sheet.attach :category => ap_category,
+                         :parent   => liabilities_category
+    puts "- AP category attached to report, with liabilities category as parent"
+
+    puts "All done."
+  end
 end
