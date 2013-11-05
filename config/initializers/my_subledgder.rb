@@ -10,4 +10,12 @@ module MySubledger
   def self.escrow_account
     ENV['SUBLEDGER_ESCROW_ID']
   end
+
+  def self.ar_category
+    ENV['SUBLEDGER_AR_CATEGORY_ID']
+  end
+
+  def self.ap_category
+    ENV['SUBLEDGER_AP_CATEGORY_ID']
+  end
 end

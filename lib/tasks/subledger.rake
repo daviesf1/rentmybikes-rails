@@ -120,10 +120,10 @@ namespace :subledger do
     puts "- Escrow category created"
 
     ar_category = subledger.categories.create :description => 'Accounts Receivable', normal_balance: Subledger::Domain::Debit, version: 1
-    puts "- Accounts Receivable category created"
+    puts "- Accounts Receivable category created: #{ar_category.id}"
 
     ap_category = subledger.categories.create :description => 'Accounts Payable', normal_balance: Subledger::Domain::Credit, version: 1
-    puts "- Accounts Payable created"
+    puts "- Accounts Payable created: #{ap_category.id}"
 
     # attach accounts to categories
     puts "* Attaching Accounts to Categories"
@@ -164,6 +164,30 @@ namespace :subledger do
                          :parent   => liabilities_category
     puts "- AP category attached to report, with liabilities category as parent"
 
+    puts "* Just add/set the following to .env and config/creds:"
+    puts "SUBLEDGER_AR_CATEGORY_ID='#{ar_category.id}'"
+    puts "SUBLEDGER_AP_CATEGORY_ID='#{ap_category.id}'"
     puts "All done."
+  end
+
+  task :report_attach_users, [] => :environment do |t, args|
+    # create my subledger instance
+    subledger = MySubledger.new
+
+    ap_category = subledger.categories.read :id => MySubledger.ap_category
+    puts "AP Category is #{ap_category.id}"
+
+    ar_category = subledger.categories.read :id => MySubledger.ar_category
+    puts "AR Category is #{ar_category.id}"
+
+    User.all.each do |user|
+      puts "- User: #{user.email}"
+
+      ap_category.attach :account => subledger.account(:id => user.subledger_ap_acct_id)
+      puts "- User ap account attached to ap category"
+
+      ar_category.attach :account => subledger.account(:id => user.subledger_ar_acct_id)
+      puts "- user ar account attached to ar category"
+    end
   end
 end

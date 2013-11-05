@@ -3,7 +3,7 @@ RentMyBike::Application.routes.draw do
 
   resources :listings, :rentals
 
-  get "/account"             => "accounts#my_earnings", :as => "account"
+  get "/account"             => "accounts#my_rentals" , :as => "account"
   get "/account/my_earnings" => "accounts#my_earnings", :as => "my_earnings"
   get "/account/my_rentals"  => "accounts#my_rentals" , :as => "my_rentals"
 

@@ -1,6 +1,6 @@
 <ul class="nav nav-tabs subledger-nav-tabs">
-  <li class="<%= 'active' if action_name == "my_earnings" %>"><%= link_to "My Earnings", my_earnings_path %></li>
   <li class="<%= 'active' if action_name == "my_rentals" %>"><%= link_to "My Rentals", my_rentals_path %></li>
+  <li class="<%= 'active' if action_name == "my_earnings" %>"><%= link_to "My Earnings", my_earnings_path %></li>
   <li><%= link_to 'My Profile', edit_user_registration_path(current_user) %></li>
 </ul>
 

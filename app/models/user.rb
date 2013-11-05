@@ -47,6 +47,10 @@ class User < ActiveRecord::Base
 
       self.subledger_ar_acct_id = ar.id
       self.save(failOnError: true)
+
+      # attach to ar category
+      ar_category = self.subledger.category.read id: MySubledger.ar_category
+      ar_category.attach :account => ar
     end
   end
 
@@ -58,6 +62,10 @@ class User < ActiveRecord::Base
 
       self.subledger_ap_acct_id = ap.id
       self.save(failOnError: true)
+
+      # attach to ap category
+      ap_category = self.subledger.category.read id: MySubledger.ap_category
+      ap_category.attach :account => ap
     end
   end
 
