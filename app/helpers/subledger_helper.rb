@@ -3,7 +3,7 @@ module SubledgerHelper
     if value.value.class == Subledger::Domain::Zero
       "#{number_to_currency value.amount}".html_safe
 
-    elsif account.normal_balance == value.value.class
+    elsif value.value.class == Subledger::Domain::Credit
       "<i class='icon-arrow-up'></i> #{number_to_currency value.amount}".html_safe
 
     else
