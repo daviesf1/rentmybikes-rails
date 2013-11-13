@@ -38,8 +38,6 @@ gem 'protected_attributes'
 
 gem 'therubyracer'
 
-gem 'less-rails'
-
 group :development do
   gem 'debugger'
   # fix rails console error on ubuntu

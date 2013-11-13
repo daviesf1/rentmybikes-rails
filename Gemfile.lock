@@ -35,7 +35,6 @@ GEM
     bootstrap-sass (2.0.4.2)
     builder (3.1.4)
     columnize (0.3.6)
-    commonjs (0.2.7)
     debugger (1.6.2)
       columnize (>= 0.3.1)
       debugger-linecache (~> 1.2.0)
@@ -65,11 +64,6 @@ GEM
       thor (>= 0.14, < 2.0)
     json (1.8.1)
     kgio (2.8.1)
-    less (2.4.0)
-      commonjs (~> 0.2.7)
-    less-rails (2.4.2)
-      actionpack (>= 3.1)
-      less (~> 2.4.0)
     libv8 (3.16.14.3)
     mail (2.5.4)
       mime-types (~> 1.16)
@@ -170,7 +164,6 @@ DEPENDENCIES
   debugger
   devise
   jquery-rails
-  less-rails
   pg
   protected_attributes
   quiet_assets
