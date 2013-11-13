@@ -5,10 +5,10 @@ module SubledgerHelper
         "#{number_to_currency value.amount}".html_safe
 
       when Subledger::Domain::Credit
-        "<i class='icon-arrow-up'></i> #{number_to_currency value.amount}".html_safe
+        "#{image_tag('arrow_up.png')} #{number_to_currency value.amount}".html_safe
 
       else
-        "<i class='icon-arrow-down'></i> #{number_to_currency value.amount}".html_safe
+        "#{image_tag('arrow_down.png')} #{number_to_currency value.amount}".html_safe
     end
   end
 end

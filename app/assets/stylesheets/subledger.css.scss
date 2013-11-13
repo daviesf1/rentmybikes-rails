@@ -10,6 +10,10 @@
   margin-bottom: 25px;
   background-color: #fff;
 
+  img.poweredby {
+    padding-bottom: 15px;
+  }
+
   table {
     margin-bottom: 0;
 
@@ -22,11 +26,11 @@
         }
         
         &:nth-child(3) {
-          width: 60px;
+          width: 80px;
         }
 
         &:nth-child(4) {
-          width: 60px;
+          width: 80px;
         }
       }
     }
