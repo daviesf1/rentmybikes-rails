@@ -11,4 +11,15 @@ module SubledgerHelper
         "#{image_tag('arrow_down.png')} #{number_to_currency value.amount}".html_safe
     end
   end
+
+  def share_link
+    url = request.original_url
+
+    if user_signed_in? and not url.include?("token=")
+      prefix = url.include?("?") ? "&" : "?"
+      url += "#{prefix}token=#{current_user.authentication_token}"
+    end
+
+    "<a href='#{url}' target='_blank'>Share this!</a>".html_safe
+  end
 end

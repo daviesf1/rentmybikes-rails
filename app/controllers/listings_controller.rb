@@ -1,5 +1,7 @@
 class ListingsController < ApplicationController
-  before_filter :require_sign_in, :only => [:edit, :update]
+  before_filter :authenticate_user_from_token!, :only => [:edit, :update]
+  before_filter :authenticate_user!, :only => [:edit, :update]
+
   before_filter :listing_owner_required, :only => [:edit, :update]
 
   def index
@@ -67,10 +69,6 @@ class ListingsController < ApplicationController
   end
 
 private
-  def require_sign_in
-    raise "Access Denied" unless (user_signed_in? && current_user.present?)
-  end
-  
   def listing_owner_required
     @listing = current_user.listings.find(params[:id])
     raise "Access Denied" unless (@listing.present? && @listing.user == current_user)
