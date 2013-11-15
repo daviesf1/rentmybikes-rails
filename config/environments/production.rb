@@ -77,10 +77,4 @@ RentMyBike::Application.configure do
 
   # Use default logging formatter so that PID and timestamp are not suppressed.
   config.log_formatter = ::Logger::Formatter.new
-
-  config.app_generators.stylesheet_engine :less
-
-  config.less.paths << "#{Rails.root}/app/assets/less"
-  config.less.compress = true
-
 end
