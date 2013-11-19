@@ -15,7 +15,11 @@ account if you dont already have one and install [Toolbelt]
 
 Live Site
 ---
-[http://rentmybike-rails.herokuapp.com](http://rentmybike-rails.herokuapp.com)
+[http://rentmybikes.subledger.com/](http://rentmybikes.subledger.com/)
+
+Security Warning
+---
+[Please note that the 'Share this' links on each page of this application causes a MAJOR security risk and should be removed from a production mareketplace] 
 
 Resources
 ---
