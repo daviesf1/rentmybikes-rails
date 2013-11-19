@@ -19,7 +19,7 @@ Live Site
 
 Security Warning
 ---
-[Please note that the 'Share this' links on each page of this application causes a MAJOR security risk and should be removed from a production mareketplace] 
+Please note that the 'Share this' links on each page of this application causes a MAJOR security risk and should be removed from a production mareketplace 
 
 Resources
 ---
